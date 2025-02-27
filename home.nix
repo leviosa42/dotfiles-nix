@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
-let
-  mkOutOfStoreSymlink = config.lib.file.mkOutOfStoreSymlink;
-in
-rec {
+let mkOutOfStoreSymlink = config.lib.file.mkOutOfStoreSymlink;
+in rec {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "motch";
@@ -16,7 +14,6 @@ rec {
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
   home.stateVersion = "24.11"; # Please read the comment before changing.
-
 
   xdg.enable = true;
 
@@ -39,29 +36,29 @@ rec {
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
-	bat
-	eza
-	delta
-	dust
-	fzf
+    bat
+    eza
+    delta
+    dust
+    fzf
 
-	neovim
+    neovim
 
-	git
-	gh
+    git
+    gh
 
-	era
+    era
   ];
 
   programs.bash = {
-	  enable = true;
-	  enableCompletion = true;
-	  historyFileSize = 100000;
+    enable = true;
+    enableCompletion = true;
+    historyFileSize = 100000;
   };
 
   programs.starship = {
     enable = true;
-	enableBashIntegration = true;
+    enableBashIntegration = true;
   };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -79,8 +76,12 @@ rec {
     # '';
     # ".bashrc".source = mkOutOfStoreSymlink ./.bashrc;
     # ".bashrc".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles-nix/.bashrc";
-    ".vimrc".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles-nix/.vimrc";
-    ".config/nvim".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles-nix/.config/nvim";
+    ".vimrc".source =
+      mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles-nix/.vimrc";
+    ".config/nvim".source = mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/dotfiles-nix/.config/nvim";
+    ".config/git".source = mkOutOfStoreSymlink
+      "${config.home.homeDirectory}/dotfiles-nix/.config/git";
   };
 
   # Home Manager can also manage your environment variables through
