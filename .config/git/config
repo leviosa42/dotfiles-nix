@@ -3,3 +3,9 @@
 	name = leviosa42
 [init]
 	defaultBranch = main
+[credential "https://github.com"]
+	helper = 
+	helper = !/home/motch/.nix-profile/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/home/motch/.nix-profile/bin/gh auth git-credential

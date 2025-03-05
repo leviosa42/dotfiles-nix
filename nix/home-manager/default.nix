@@ -1,0 +1,54 @@
+{ config, pkgs, ... }: 
+let
+  mkOutOfStoreSymlink = config.lib.file.mkOutOfStoreSymlink;
+in
+rec {
+  # required to use home-manager
+  programs.home-manager.enable = true;
+  home.stateVersion = "24.11";
+  home.username = "motch";
+  home.homeDirectory = "/home/${home.username}";
+
+  xdg.enable = true;
+  home.packages = with pkgs; [
+    bat
+    eza
+    delta
+    dust
+    fzf
+    ripgrep
+
+    neovim
+
+    git
+    gh
+
+    deno
+
+    era
+  ];
+
+  programs.bash = {
+    enable = true;
+    enableCompletion = true;
+    historyFileSize = 100000;
+  };
+
+  programs.starship = {
+    enable = true;
+    enableBashIntegration = true;
+  };
+
+  home.file = {
+    ".vimrc".source =
+      mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.vimrc";
+    ".config/nvim".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.config/nvim";
+    ".config/git".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.config/git";
+  };
+
+  home.sessionVariables = {
+    # EDITOR = "emacs";
+    EDITOR = "vim";
+  };
+
+}

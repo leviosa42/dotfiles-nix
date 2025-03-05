@@ -17,10 +17,18 @@
       system = "aarch64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
     in {
-      homeConfigurations."motch" = home-manager.lib.homeManagerConfiguration {
+
+      homeConfigurations."rpi5" = home-manager.lib.homeManagerConfiguration {
         pkgs = inputs.nixpkgs.legacyPackages."aarch64-linux";
         modules = [ ./home.nix ];
       };
+
+      homeConfigurations."wsl" = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs { system = "x86_64-linux"; };
+        modules = [ ./nix/home-manager ];
+      };
+
       formatter."aarch64-linux" = pkgs.nixfmt;
+      formatter."x86_64-linux" = pkgs.nixfmt;
     };
 }

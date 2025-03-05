@@ -41,11 +41,14 @@ in rec {
     delta
     dust
     fzf
+    ripgrep
 
     neovim
 
     git
     gh
+
+    deno
 
     era
   ];
