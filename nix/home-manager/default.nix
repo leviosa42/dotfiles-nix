@@ -27,6 +27,7 @@ rec {
     deno
 
     era
+    theme-sh
   ];
 
   programs.bash = {
