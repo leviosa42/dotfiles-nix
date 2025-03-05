@@ -20,7 +20,7 @@
 
       homeConfigurations."rpi5" = home-manager.lib.homeManagerConfiguration {
         pkgs = inputs.nixpkgs.legacyPackages."aarch64-linux";
-        modules = [ ./home.nix ];
+        modules = [ ./nix/home-manager ];
       };
 
       homeConfigurations."wsl" = home-manager.lib.homeManagerConfiguration {
