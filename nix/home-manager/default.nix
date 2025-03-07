@@ -3,6 +3,11 @@ let
   mkOutOfStoreSymlink = config.lib.file.mkOutOfStoreSymlink;
 in
 rec {
+  imports = [
+    ./bash.nix
+    ./starship.nix
+  ];
+
   # required to use home-manager
   programs.home-manager.enable = true;
   home.stateVersion = "24.11";
@@ -29,24 +34,6 @@ rec {
     era
     theme-sh
   ];
-
-  programs.bash = {
-    enable = true;
-    enableCompletion = true;
-    historyFileSize = 100000;
-    shellAliases = {
-      q = "exit";
-      cls = "clear";
-      ls = "eza";
-      lt = "eza -T";
-      g = "git";
-    };
-  };
-
-  programs.starship = {
-    enable = true;
-    enableBashIntegration = true;
-  };
 
   home.file = {
     ".vimrc".source =
