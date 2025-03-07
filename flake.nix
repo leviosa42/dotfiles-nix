@@ -14,6 +14,11 @@
 
   outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let
+      systems = [
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
+      forAllSystems = nixpkgs.lib.genAttrs systems;
     in {
 
       homeConfigurations."rpi5" = home-manager.lib.homeManagerConfiguration {
@@ -26,7 +31,13 @@
         modules = [ ./nix/home-manager ];
       };
 
-      formatter."aarch64-linux" = pkgs.nixfmt;
-      formatter."x86_64-linux" = pkgs.nixfmt;
+      formatter = forAllSystems (system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in {
+          default = pkgs.nixfmt-rfc-style;
+        }
+      );
+
     };
 }
