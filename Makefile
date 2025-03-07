@@ -12,3 +12,7 @@ help:
 switch:
 	nix flake update
 	home-manager switch --flake .#$(HOST)
+
+## format: Format files
+format:
+	nix fmt *
