@@ -14,8 +14,6 @@
 
   outputs = inputs@{ self, nixpkgs, home-manager, ... }:
     let
-      system = "aarch64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
     in {
 
       homeConfigurations."rpi5" = home-manager.lib.homeManagerConfiguration {
