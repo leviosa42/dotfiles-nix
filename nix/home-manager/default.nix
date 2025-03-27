@@ -15,6 +15,19 @@ rec {
   home.homeDirectory = "/home/${home.username}";
 
   xdg.enable = true;
+
+  xdg.configFile = {
+    "fcitx5/config" = {
+      force = true;
+      text = builtins.readFile ../../.config/fcitx5/config;
+    };
+  
+    "fcitx5/profile" = {
+      force = true;
+      text = builtins.readFile ../../.config/fcitx5/profile;
+    };
+  };
+
   home.packages = with pkgs; [
     bat
     eza
