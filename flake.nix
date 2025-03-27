@@ -27,7 +27,7 @@
       forAllSystems = nixpkgs.lib.genAttrs systems;
     in
     {
-      nixosConfigurations."DESKTOP" = inputs.nixpkgs.lib.nixosSystem {
+      nixosConfigurations."nixos" = inputs.nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
           ./configuration.nix
