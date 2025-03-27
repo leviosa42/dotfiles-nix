@@ -11,7 +11,11 @@ help:
 ## switch: Switch home-manager configuration for .#(HOST)
 switch:
 	nix flake update
+ifeq ($(HOST),nixos)
+	sudo nixos-rebuild switch --flake .#$(HOST)
+else
 	home-manager switch --flake .#$(HOST)
+endif
 
 ## format: Format files
 format:
