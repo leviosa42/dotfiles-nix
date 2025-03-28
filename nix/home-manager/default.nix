@@ -21,7 +21,7 @@ rec {
       force = true;
       text = builtins.readFile ../../.config/fcitx5/config;
     };
-  
+
     "fcitx5/profile" = {
       force = true;
       text = builtins.readFile ../../.config/fcitx5/profile;
@@ -38,6 +38,7 @@ rec {
     tealdeer
 
     neovim
+    vscode
 
     git
     gh
