@@ -1,0 +1,14 @@
+{
+    "input": {
+        "blocklist": [],
+        "plugins_order": [
+            "rnnoise"
+        ],
+        "rnnoise": {
+            "input-gain": -20.0,
+            "model-path": "",
+            "output-gain": 0.0
+        }
+    }
+}
+

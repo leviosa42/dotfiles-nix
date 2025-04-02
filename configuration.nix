@@ -143,8 +143,13 @@
     gnumake
     curl
     wget
+    # terminal
     alacritty
     wezterm
+    # sound
+    easyeffects
+    helvum
+
     discord
     chromium
     prismlauncher
