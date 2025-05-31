@@ -22,59 +22,70 @@
     };
   };
 
-  outputs = inputs@{
-    self,
-    nixpkgs,
-    flake-parts,
-    home-manager,
-    systems,
-    ...
-  }:
-  flake-parts.lib.mkFlake {inherit inputs; } {
-    systems = import systems;
-
-    imports = [
-      ## REF: https://flake.parts/options/git-hooks-nix.html
-      inputs.git-hooks-nix.flakeModule
-    ];
-
-    perSystem = {
-      config,
-      pkgs,
-      system,
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      flake-parts,
+      home-manager,
+      systems,
       ...
-    }: {
-      pre-commit = {
-        check.enable = true; # perform the pre-commit checks in `nix flake check`
-        settings = {
-          # src = ./.;
-          ## REF: https://flake.parts/options/git-hooks-nix.html#opt-perSystem.pre-commit.settings.hooks
-          hooks = {
-            ## --- predefined hooks ---
-            deadnix = { # Scan Nix files for dead code (unused variables bindings)
-              enable = true;
-              settings = {
-                noLambdaPatternNames = true; # Don’t check lambda pattern names (don’t break nixpkgs callPackage).
+    }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = import systems;
+
+      imports = [
+        ## REF: https://flake.parts/options/git-hooks-nix.html
+        inputs.git-hooks-nix.flakeModule
+      ];
+
+      perSystem =
+        {
+          config,
+          pkgs,
+          system,
+          ...
+        }:
+        {
+          pre-commit = {
+            check.enable = true; # perform the pre-commit checks in `nix flake check`
+            settings = {
+              # src = ./.;
+              ## REF: https://flake.parts/options/git-hooks-nix.html#opt-perSystem.pre-commit.settings.hooks
+              hooks = {
+                ## --- predefined hooks ---
+                deadnix = {
+                  # Scan Nix files for dead code (unused variables bindings)
+                  enable = true;
+                  settings = {
+                    noLambdaPatternNames = true; # Don’t check lambda pattern names (don’t break nixpkgs callPackage).
+                  };
+                };
+                # detect-private-keys.enable = true; # Detect the presence of private keys
+                fix-byte-order-marker.enable = true; # Remove UTF-8 BOM
+                flake-checker.enable = true; # Run health checks on flake-powered Nix projects
+                # nixfmt-rfc-style.enable = true; # Format nixfmt-rfc-style
+                # shellcheck.enable = true; # Format shell scripts
+                statix = { # Lints and suggests improvements to Nix code
+                  enable = true;
+                  settings = {
+                    ignore = [
+                      "_*"
+                    ];
+                  };
+                };
+                ## REF: https://flake.parts/options/git-hooks-nix.html#opt-perSystem.pre-commit.settings.hooks.treefmt
+                # treefmt.enable = true;
+                ## --- custom hooks ---
               };
             };
-            # detect-private-keys.enable = true; # Detect the presence of private keys
-            fix-byte-order-marker.enable = true; # Remove UTF-8 BOM
-            flake-checker.enable = true; # Run health checks on flake-powered Nix projects
-            # nixfmt-rfc-style.enable = true; # Format nixfmt-rfc-style
-            # shellcheck.enable = true; # Format shell scripts
-            # statix.enable = true; # Lints and suggests improvements to Nix code
-            ## REF: https://flake.parts/options/git-hooks-nix.html#opt-perSystem.pre-commit.settings.hooks.treefmt
-            # treefmt.enable = true;
-            ## --- custom hooks ---
+          };
+
+          devShells = {
+            default = pkgs.mkShell {
+              inputsFrom = [ config.pre-commit.devShell ];
+            };
           };
         };
-      };
-
-      devShells = {
-        default = pkgs.mkShell {
-          inputsFrom = [ config.pre-commit.devShell ];
-        };
-      };
     };
-  };
 }
