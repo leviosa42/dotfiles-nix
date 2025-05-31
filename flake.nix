@@ -72,9 +72,7 @@
 
       devShells = {
         default = pkgs.mkShell {
-          packages = with pkgs; [
-            pre-commit
-          ];
+          inputsFrom = [ config.pre-commit.devShell ];
         };
       };
     };
