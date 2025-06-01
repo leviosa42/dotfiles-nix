@@ -5,7 +5,7 @@ let
 in
 rec {
   imports = [
-    ./bash.nix
+    ./bash
     ./starship.nix
     ./vim
     ./git
