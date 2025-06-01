@@ -37,7 +37,23 @@
       imports = [
         ## REF: https://flake.parts/options/git-hooks-nix.html
         inputs.git-hooks-nix.flakeModule
+        ## REF: https://flake.parts/options/home-manager.html
+        inputs.home-manager.flakeModules.home-manager
       ];
+
+      flake = {
+        ## TODO: Add NixOS configuration (NixOS and NixOS-WSL)
+        homeConfigurations = {
+          "Home" = home-manager.lib.homeManagerConfiguration {
+            pkgs = import nixpkgs { system = "x86_64-linux"; };
+            modules = [ ./nix/home-manager ];
+          };
+          "rpi5-waltz" = home-manager.lib.homeManagerConfiguration {
+            pkgs = import nixpkgs { system = "aarch64-linux"; };
+            modules = [ ./nix/home-manager ];
+          };
+        };
+      };
 
       perSystem =
         {
@@ -68,6 +84,7 @@
                 # shellcheck.enable = true; # Format shell scripts
                 statix = { # Lints and suggests improvements to Nix code
                   enable = true;
+                  verbose = true; # Show all warnings
                   settings = {
                     ignore = [
                       "_*"

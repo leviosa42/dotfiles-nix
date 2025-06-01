@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 let
-  mkOutOfStoreSymlink = config.lib.file.mkOutOfStoreSymlink;
+  # mkOutOfStoreSymlink = config.lib.file.mkOutOfStoreSymlink;
+  inherit (pkgs.lib) mkOutOfStoreSymlink;
 in
 rec {
   imports = [
