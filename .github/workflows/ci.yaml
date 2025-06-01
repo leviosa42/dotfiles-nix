@@ -1,0 +1,20 @@
+name: CI
+## REF: https://zenn.dev/nokazn/articles/nix-flake-init-project#github-actions%E3%81%A7%E3%81%AEci%2Fcd
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  static-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@27
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: DeterminateSystems/flake-checker-action@main
+      - name: Check
+        run: nix develop -c just check
