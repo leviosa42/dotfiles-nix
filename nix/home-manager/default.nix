@@ -8,6 +8,8 @@ rec {
     ./bash.nix
     ./starship.nix
     ./vim
+    ./git
+    ./gh
   ];
 
   nixpkgs = {
@@ -48,9 +50,6 @@ rec {
     neovim
     vscode
 
-    git
-    gh
-
     deno
 
     era
@@ -60,7 +59,7 @@ rec {
   home.file = {
     # ".vimrc".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.vimrc";
     ".config/nvim".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.config/nvim";
-    ".config/git".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.config/git";
+    # ".config/git".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.config/git";
   };
 
   home.sessionVariables = {
