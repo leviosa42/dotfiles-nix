@@ -1,13 +1,20 @@
 { config, pkgs, ... }:
 let
   # mkOutOfStoreSymlink = config.lib.file.mkOutOfStoreSymlink;
-  inherit (pkgs.lib) mkOutOfStoreSymlink;
+  inherit (config.lib.file) mkOutOfStoreSymlink;
 in
 rec {
   imports = [
     ./bash.nix
     ./starship.nix
+    ./vim
   ];
+
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+    };
+  };
 
   # required to use home-manager
   programs.home-manager.enable = true;
@@ -51,7 +58,7 @@ rec {
   ];
 
   home.file = {
-    ".vimrc".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.vimrc";
+    # ".vimrc".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.vimrc";
     ".config/nvim".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.config/nvim";
     ".config/git".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.config/git";
   };

@@ -27,12 +27,10 @@
       self,
       nixpkgs,
       flake-parts,
-      home-manager,
-      systems,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = import systems;
+      systems = import inputs.systems;
 
       imports = [
         ## REF: https://flake.parts/options/git-hooks-nix.html
@@ -44,11 +42,11 @@
       flake = {
         ## TODO: Add NixOS configuration (NixOS and NixOS-WSL)
         homeConfigurations = {
-          "Home" = home-manager.lib.homeManagerConfiguration {
+          "Home" = inputs.home-manager.lib.homeManagerConfiguration {
             pkgs = import nixpkgs { system = "x86_64-linux"; };
             modules = [ ./nix/home-manager ];
           };
-          "rpi5-waltz" = home-manager.lib.homeManagerConfiguration {
+          "rpi5-waltz" = inputs.home-manager.lib.homeManagerConfiguration {
             pkgs = import nixpkgs { system = "aarch64-linux"; };
             modules = [ ./nix/home-manager ];
           };
@@ -101,6 +99,10 @@
           devShells = {
             default = pkgs.mkShell {
               inputsFrom = [ config.pre-commit.devShell ];
+              packages = with pkgs; [
+                # home-manager.packages.${system}.default
+                home-manager
+              ];
             };
           };
         };

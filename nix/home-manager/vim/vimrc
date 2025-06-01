@@ -1,0 +1,177 @@
+set nocompatible
+syntax off
+filetype plugin indent off
+
+set encoding=utf-8
+set fileencodings=utf-8,sjis
+
+" === ui ===
+set number
+set cursorline
+set showmatch
+set showcmd
+set mouse=a
+set wildmenu
+set wildmode=list:longest,full
+if has('patch-8.2.4325')
+  set wildmode=full
+  set wildoptions=pum
+endif
+
+" === slash searching ===
+set incsearch
+set ignorecase
+set smartcase
+set hlsearch
+
+" === editing ===
+set whichwrap=b,s,<,>,[,]
+set backspace=indent,eol,start
+set virtualedit=onemore
+set scrolloff=2
+
+" === indentation ===
+set noexpandtab
+set smarttab
+set tabstop=2
+set shiftwidth=0 softtabstop=-1 " fololow to tabstop
+set autoindent
+set smartindent
+
+set undofile
+set undodir=$XDG_CACHE_HOME/vim/undo
+set viminfo='1000,n$XDG_CACHE_HOME/vim/viminfo
+set runtimepath=$XDG_CONFIG_HOME/vim,$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after,$XDG_DATA_HOME/vim
+
+" === listchars ===
+set list
+set listchars=
+" set listchars+=tab:>\\x20
+" set listchars+=tab:→\\x20
+set listchars+=tab:›\\x20 " SINGLE RIGHT-POINTING ANGLE QUOTATION MARK(>1)
+" set listchars+=lead:• " BULLET(oo)
+set listchars+=lead:· " MIDDLE DOT(.M)
+set listchars+=trail:~
+set listchars+=extends:» " RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK(>>)
+set listchars+=precedes:« " LEFT-POINTING DOUBLE ANGLE QUOTATION MARK(<<)
+
+" === statusline ===
+set laststatus=2
+let s:stl = ''
+" let s:stl .= '%-{%g:actual_curwin==win_getid(winnr())?"%#SignColumn#":"%#StatusLineNC#"%}'
+let s:stl .= '%-{%g:actual_curwin==win_getid(winnr())?"%#Directory#":"%#StatusLineNC#"%}'
+let s:stl .= ' %{mode()[0]} ' " mode
+let s:stl .= '%-{%g:actual_curwin==win_getid(winnr())?&modified?"%#DiffAdd#":"%#StatusLine#":"%#StatusLineNC#"%}'
+let s:stl .= ' '
+" let s:stl .= '%-F' " filename
+let s:stl .= '%-{%mode()[0]==#"t"&&(&shell)=~#"nyagos"?"NYAGOS":"%F"%}'
+let s:stl .= '%-m' " is modified
+let s:stl .= '%-r' " is readonly
+" let s:stl .= '%-h' " is help-page
+let s:stl .= '%=' " separation point between left and right
+let s:stl .= '%{%g:actual_curwin==win_getid(winnr())?"%#CursorLine#":"%#StatusLineNC#"%}'
+" let s:stl .= ' '
+" let s:stl .= '%y'
+let s:stl .= ' '
+let s:stl .= '%{&ft}'
+let s:stl .= ' '
+let s:stl .= '%{&et?"spc":"tab"}:%{&ts}'
+let s:stl .= ' '
+let s:stl .= '%{&fenc!=""?&fenc:&enc}'
+let s:stl .= ' '
+let s:stl .= '%{&ff=="dos"?"CRLF":&ff=="unix"?"LF":"CR"}' " show fileformat
+let s:stl .= ' '
+" let s:stl .= '%l,%c' " lines/columns
+let s:stl .= '%p%%'
+let s:stl .= ' '
+let s:stl .= '%<'
+
+
+set laststatus=2
+let &statusline = s:stl
+
+" set title
+" let s:tst = ''
+" let s:tst .= '%{&shell}'
+" let &titlestring = s:tst
+
+let g:mapleader ="\<Space>"
+
+inoremap <silent> jk <Esc>
+nnoremap x "_x
+
+" --- [buffer] ---
+nmap <Leader>b [buffer]
+nnoremap [buffer] <Nop>
+
+nnoremap [buffer]n :new<CR>
+nnoremap [buffer]j :bnext<CR>
+nnoremap [buffer]k :bprevious<CR>
+nnoremap [buffer]l :ls<CR>
+
+" --- [edit] ---
+nmap <Leader>e [edit]
+
+" --- [vimrc] ---
+"nmap <Leader>v [vimrc]
+"nnoremap [vimrc]s :source $MYVIMRC<CR>
+"nnoremap [vimrc]e :edit $MYVIMRC<CR>
+
+" --- terminal ---
+nmap <Leader>x [terminal]
+nnoremap [terminal]h :vertical aboveleft terminal<CR>
+nnoremap [terminal]j :rightbelow terminal<CR>
+nnoremap [terminal]k :aboveleft terminal<CR>
+nnoremap [terminal]l :vertical rightbelow terminal<CR>
+nnoremap [terminal]<Space> :terminal ++curwin<CR>
+
+" === autocmds ===
+augroup vimrc
+  autocmd!
+
+  " --- detect filetype ---
+  autocmd BufNewFile,BufRead *.plt setfiletype gnuplot
+
+  " --- 'commentstring'
+  autocmd FileType gnuplot setl cms=#\ %s
+
+  " --- 'keywordprg' ---
+  autocmd FileType vim setl kp=:help
+  autocmd FileType sh  setl kp=:Man
+        " \ | nnoremap K :Man <cword><CR>
+  command! -buffer -nargs=1 GnuplotHelp :exe ':term gnuplot -e "help <args>"'
+  autocmd FileType gnuplot setl kp=:GnuplotHelp
+
+  " --- indentation by filetype ---
+  autocmd FileType vim setl ts=2 et
+  autocmd FileType sh  setl ts=2 et
+  autocmd FileType c   setl ts=4 noet cindent
+  autocmd FileType man setl ts=4
+  " autocmd FileType dotbatch setl ts=4 noet fenc=shift_jis
+
+  " --- 'makeprg' by filetype ---
+  autocmd FileType c setl mp=gcc\ %
+
+  autocmd FileType vim setl cms=\"\ %s
+  autocmd FileType sh  setl cms=#\ %s
+  autocmd FileType c   setl cms=//\ %s
+
+  " --- man ---
+  autocmd FileType man
+        \ | setl nolist nonumber nomodifiable readonly noswapfile fdl=99
+        \ | if !empty($MAN_PN) | file $MAN_PN | endif
+
+  if exists("+omnifunc")
+    autocmd Filetype *
+          \ if &omnifunc == "" |
+          \   setlocal omnifunc=syntaxcomplete#Complete |
+          \ endif
+  endif
+augroup END
+
+syntax on
+filetype plugin indent on
+
+set background=dark
+colorscheme retrobox
+
