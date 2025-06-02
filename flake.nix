@@ -174,9 +174,10 @@
                 echo "  distro: $distro"
                 echo "  is_wsl: $(is_wsl && echo true || echo false)"
 
-                run_command "nix flake update"
-                git add flake.nix
-                git commit -m "update(deps): flake.lock by `nix run .#switch`"
+                ## NOTE: inf loop?
+                # run_command "nix flake update"
+                # git add flake.nix
+                # git commit -m "update(deps): flake.lock by `nix run .#switch`"
 
                 if [[ "$distro" == "nixos" ]]; then
                   if is_wsl; then
