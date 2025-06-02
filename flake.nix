@@ -45,7 +45,7 @@
           "Home" = inputs.home-manager.lib.homeManagerConfiguration {
             pkgs = import nixpkgs { system = "x86_64-linux"; };
             modules = [
-              {
+              rec {
                 home.username = "motch";
                 home.homeDirectory = "/home/${home.username}";
               }
@@ -55,7 +55,7 @@
           "rpi5-waltz" = inputs.home-manager.lib.homeManagerConfiguration {
             pkgs = import nixpkgs { system = "aarch64-linux"; };
             modules = [
-              {
+              rec {
                 home.username = "nimado";
                 home.homeDirectory = "/home/${home.username}";
               }
