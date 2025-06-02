@@ -2,36 +2,27 @@
 
 ## Installation
 
-### NixOS
+### NixOS (NixOS-WSL)
 
-#### NixOS-WSL
+```sh
+sudo nix-channel --update
 
-1. First, you have to change the defalut username from `nixos` to `nimado`.
-  - ref: https://nix-community.github.io/NixOS-WSL/how-to/change-username.html
-2. Run below this script.
-    ```sh
-    nix-shell -p git
-    git clone https://github.com/leviosa42/dotfiles-nix && cd dotfiles-nix
+mkdir -p ~/.config/nix
+echo "experimental-features = nix-commands flakes" >> ~/.config/nix/nix.conf
 
-    sudo nixos-rebuild switch --flake .#WSL
-    exit # to exit nix-shell
-    exec $SHELL # to apply home-manager configuration.
-    ```
+nix-shell -p git
+git clone https://github.com/leviosa42/dotfiles-nix && cd dotfiles-nix
+
+nix flake update
+nix run .#switch
+```
 
 ### non-NixOS
 
 ```sh
 git clone https://github.com/leviosa42/dotfiles-nix && cd dotfiles-nix
 nix flake update
-nix develop
-
-# for my main pc (x86_64-linux)
-home-manager switch --flake .#Home
-# for Raspberry Pi (aarch64)
-home-manager switch --flake .#rpi5-waltz
-
-exit # to exit nix-shell
-exec $SHELL # to apply home-manager configuration
+nix run .#switch
 ```
 
 [![CI](https://github.com/leviosa42/dotfiles-nix/actions/workflows/ci.yaml/badge.svg?branch=develop)](https://github.com/leviosa42/dotfiles-nix/actions/workflows/ci.yaml)
