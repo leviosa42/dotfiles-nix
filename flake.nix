@@ -7,6 +7,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     systems.url = "github:nix-systems/default";
@@ -41,6 +43,32 @@
 
       flake = {
         ## TODO: Add NixOS configuration (NixOS and NixOS-WSL)
+        nixosConfigurations = {
+          "WSL" = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
+              ## NixOS-WSL
+              inputs.nixos-wsl.nixosModules.default
+              {
+                system.stateVersion = "24.11";
+                wsl.enable = true;
+                ## REF: https://nix-community.github.io/NixOS-WSL/options.html
+                wsl = {
+                  defaultUser = "nixos";
+                };
+              }
+              ## home-manager
+              inputs.home-manager.nixosModules.home-manager
+              {
+                home-manager = {
+                  useGlobalPkgs = true;
+                  useUserPackages = true;
+                  users."nixos" = import ./nix/home-manager;
+                };
+              }
+            ];
+          };
+        };
         homeConfigurations = {
           "Home" = inputs.home-manager.lib.homeManagerConfiguration {
             pkgs = import nixpkgs { system = "x86_64-linux"; };
