@@ -6,7 +6,8 @@ in
 rec {
   imports = [
     ./bash
-    ./starship.nix
+    ./direnv
+    ./starship
     ./vim
     ./git
     ./gh
