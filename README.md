@@ -25,4 +25,4 @@ nix flake update
 nix run .#switch
 ```
 
-[![CI](https://github.com/leviosa42/dotfiles-nix/actions/workflows/ci.yaml/badge.svg?branch=develop)](https://github.com/leviosa42/dotfiles-nix/actions/workflows/ci.yaml)
+[![CI](https://github.com/leviosa42/dotfiles-nix/actions/workflows/ci.yaml/badge.svg)](https://github.com/leviosa42/dotfiles-nix/actions/workflows/ci.yaml)
