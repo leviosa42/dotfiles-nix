@@ -48,7 +48,7 @@ rec {
     tealdeer
 
     neovim
-    vscode
+    # vscode
 
     deno
 
