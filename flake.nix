@@ -62,8 +62,13 @@
               inputs.home-manager.nixosModules.home-manager
               {
                 home-manager = {
-                  useGlobalPkgs = true;
-                  useUserPackages = true;
+                  ## TODO: commented out because of this warning:
+                  ##   > $ nix flake check
+                  ##   > evaluation warning: nimado profile: You have set either `nixpkgs.config` or `nixpkgs.overlays` while using `home-manager.useGlobalPkgs`.
+                  ## REF: https://apribase.net/2023/08/22/nix-home-manager-qa/
+                  ## REF: https://nix-community.github.io/home-manager/index.xhtml#sec-install-nixos-module
+                  # useGlobalPkgs = true;
+                  # useUserPackages = true;
                   users."nimado" = import ./nix/home-manager;
                 };
               }
