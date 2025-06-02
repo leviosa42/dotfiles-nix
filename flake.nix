@@ -54,7 +54,8 @@
                 wsl.enable = true;
                 ## REF: https://nix-community.github.io/NixOS-WSL/options.html
                 wsl = {
-                  defaultUser = "nixos";
+                  defaultUser = "nimado";
+                  interop.includePath = false;
                 };
               }
               ## home-manager
@@ -63,7 +64,7 @@
                 home-manager = {
                   useGlobalPkgs = true;
                   useUserPackages = true;
-                  users."nixos" = import ./nix/home-manager;
+                  users."nimado" = import ./nix/home-manager;
                 };
               }
             ];
