@@ -152,6 +152,56 @@
             };
           };
 
+          apps = {
+            switch = {
+              type = "app";
+              ## display runned commadn to switch configurations with cyan color
+              program = toString (pkgs.writeShellScript "switch-script" ''
+                set -e
+                hostname=$(uname -n)
+                system=${system}
+                distro=$(cat /etc/os-release | grep ^ID= | cut -d '=' -f 2)
+                is_wsl() {
+                  grep -q "Microsoft" /proc/version || grep -q "WSL" /proc/version
+                }
+                run_command() {
+                  echo -e "\\033[36m> $1\\033[0m"
+                  eval "$1"
+                }
+                echo "info:"
+                echo "  hostname: $hostname"
+                echo "  system: $system"
+                echo "  distro: $distro"
+                echo "  is_wsl: $(is_wsl && echo true || echo false)"
+
+                run_command "nix flake update"
+                git add flake.nix
+                git commit -m "update(deps): flake.lock by `nix run .#switch`"
+
+                if [[ "$distro" == "nixos" ]]; then
+                  if is_wsl; then
+                    run_command "sudo nixos-rebuild switch --flake .#NixOS-WSL"
+                  else
+                    run_command "sudo nixos-rebuild switch --flake .#NixOS-Desktop"
+                  fi
+                else
+                  case "$system" in
+                    "x86_64-linux")
+                      run_command "home-manager switch --flake .#Home"
+                      ;;
+                    "aarch64-linux")
+                      run_command "home-manager switch --flake .#rpi5-waltz"
+                      ;;
+                    *)
+                      echo "Unknown system: $system"
+                      exit 1
+                      ;;
+                  esac
+                fi
+              '');
+            };
+          };
+
           devShells = {
             default = pkgs.mkShell {
               inputsFrom = [ config.pre-commit.devShell ];
