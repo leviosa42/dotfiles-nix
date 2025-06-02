@@ -44,7 +44,7 @@
       flake = {
         ## TODO: Add NixOS configuration (NixOS and NixOS-WSL)
         nixosConfigurations = {
-          "WSL" = nixpkgs.lib.nixosSystem {
+          "NixOS-WSL" = nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             modules = [
               ## NixOS-WSL
@@ -74,6 +74,14 @@
               }
             ];
           };
+        };
+        ## GMKtec M7 Pro
+        "NixOS-Desktop" = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./nix/machines/NixOS-Desktop/homeConfigurations
+            ./nix/machines/NixOS-Desktop/configuration.nix
+          ];
         };
         homeConfigurations = {
           "Home" = inputs.home-manager.lib.homeManagerConfiguration {
@@ -132,6 +140,8 @@
                   settings = {
                     ignore = [
                       "_*"
+                      "hardware-configuration.nix"
+                      "configuration.nix"
                     ];
                   };
                 };
