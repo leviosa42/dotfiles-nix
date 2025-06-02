@@ -7,7 +7,9 @@
     extraConfig = {
       init.defaultBranch = "main";
     };
-    ignores = [ ];
+    ignores = [
+      "*.swp"
+    ];
     aliases = {
       br = "branch";
       co = "checkout";
