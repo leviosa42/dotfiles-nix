@@ -21,8 +21,8 @@ rec {
   # required to use home-manager
   programs.home-manager.enable = true;
   home.stateVersion = "24.11";
-  home.username = "motch";
-  home.homeDirectory = "/home/${home.username}";
+  # home.username = "motch";
+  # home.homeDirectory = "/home/${home.username}";
 
   xdg.enable = true;
 
@@ -58,7 +58,7 @@ rec {
 
   home.file = {
     # ".vimrc".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.vimrc";
-    ".config/nvim".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.config/nvim";
+    ".config/nvim".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles-nix/.config/nvim";
     # ".config/git".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.config/git";
   };
 
