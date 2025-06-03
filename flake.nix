@@ -154,6 +154,10 @@
                 treefmt = {
                   enable = true;
                   packageOverrides.treefmt = config.treefmt.build.wrapper; # # use built treefmt by perSystem.treefmt
+                  before = [
+                    "statix"
+                    "deadnix"
+                  ];
                 };
                 ## --- custom hooks ---
               };
