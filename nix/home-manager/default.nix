@@ -1,12 +1,9 @@
 { config, pkgs, ... }:
-let
-  # mkOutOfStoreSymlink = config.lib.file.mkOutOfStoreSymlink;
-  inherit (config.lib.file) mkOutOfStoreSymlink;
-in
 rec {
   imports = [
     ./bash
     ./direnv
+    ./neovim
     ./starship
     ./vim
     ./git
@@ -48,7 +45,6 @@ rec {
     ripgrep
     tealdeer
 
-    neovim
     # vscode
 
     deno
@@ -57,11 +53,7 @@ rec {
     theme-sh
   ];
 
-  home.file = {
-    # ".vimrc".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.vimrc";
-    ".config/nvim".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles-nix/.config/nvim";
-    # ".config/git".source = mkOutOfStoreSymlink "${home.homeDirectory}/dotfiles-nix/.config/git";
-  };
+  # home.file = { };
 
   home.sessionVariables = {
     # EDITOR = "emacs";
