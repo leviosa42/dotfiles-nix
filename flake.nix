@@ -8,6 +8,7 @@
     };
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
 
@@ -51,15 +52,24 @@
             modules = [
               ## NixOS-WSL
               inputs.nixos-wsl.nixosModules.default
-              {
-                system.stateVersion = "24.11";
-                wsl.enable = true;
-                ## REF: https://nix-community.github.io/NixOS-WSL/options.html
-                wsl = {
-                  defaultUser = "nimado";
-                  interop.includePath = false;
-                };
-              }
+              inputs.vscode-server.nixosModules.default
+              (
+                { config, pkgs, ... }:
+                {
+                  system.stateVersion = "24.11";
+                  wsl.enable = true;
+                  ## REF: https://nix-community.github.io/NixOS-WSL/options.html
+                  wsl = {
+                    defaultUser = "nimado";
+                    interop.includePath = false;
+                  };
+                  environment.systemPackages = with pkgs; [
+                    wget # for vscode-server
+                    wslu
+                  ];
+                  services.vscode-server.enable = true;
+                }
+              )
               ## home-manager
               inputs.home-manager.nixosModules.home-manager
               {
@@ -154,6 +164,10 @@
                 treefmt = {
                   enable = true;
                   packageOverrides.treefmt = config.treefmt.build.wrapper; # # use built treefmt by perSystem.treefmt
+                  before = [
+                    "statix"
+                    "deadnix"
+                  ];
                 };
                 ## --- custom hooks ---
               };
