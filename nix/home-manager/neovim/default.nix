@@ -10,6 +10,10 @@ in
     withPython3 = false;
     withRuby = false;
     # extraLuaConfig = builtins.readFile ./init.lua;
+    extraPackages = with pkgs; [
+      nil
+      lua-language-server
+    ];
     plugins = with pkgs.vimPlugins; [ lazy-nvim ];
   };
   xdg.configFile."nvim" = {

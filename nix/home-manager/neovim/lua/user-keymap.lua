@@ -8,6 +8,9 @@ vim.keymap.set('n', '<C-r>', 'U', { noremap = true })
 vim.keymap.set('n', 'j', 'gj', { noremap = true })
 vim.keymap.set('n', 'k', 'gk', { noremap = true })
 
+vim.keymap.set('n', '<Leader>e', '[edit]', { remap = true })
+vim.keymap.set('n', '[edit]', '<Nop>', { noremap = true })
+
 vim.keymap.set('n', '<Leader>x', '[terminal]', { remap = true })
 vim.keymap.set('n', '[terminal]', '<Nop>', { noremap = true })
 -- vim.keymap.set('n', '[terminal]x', '<cmd>new<CR><Cmd>terminal<CR>', { noremap = true })
