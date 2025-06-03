@@ -10,6 +10,7 @@ in
     withPython3 = false;
     withRuby = false;
     # extraLuaConfig = builtins.readFile ./init.lua;
+    plugins = with pkgs.vimPlugins; [ lazy-nvim ];
   };
   xdg.configFile."nvim" = {
     source = mkOutOfStoreSymlink pwd;
