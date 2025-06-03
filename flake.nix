@@ -76,14 +76,14 @@
               }
             ];
           };
-        };
-        ## GMKtec M7 Pro
-        "NixOS-Desktop" = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./nix/machines/NixOS-Desktop/homeConfigurations
-            ./nix/machines/NixOS-Desktop/configuration.nix
-          ];
+          ## GMKtec M7 Pro
+          "NixOS-Desktop" = nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
+              ./nix/machines/NixOS-Desktop/hardware-configuration.nix
+              ./nix/machines/NixOS-Desktop/configuration.nix
+            ];
+          };
         };
         homeConfigurations = {
           "Home" = inputs.home-manager.lib.homeManagerConfiguration {
