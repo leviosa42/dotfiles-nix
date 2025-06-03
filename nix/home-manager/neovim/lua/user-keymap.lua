@@ -2,6 +2,8 @@ vim.g.mapleader = ' '
 
 vim.keymap.set('i', 'jk', '<Esc>', { noremap = true, silent = true })
 
+vim.keymap.set('t', 'jk', '<C-\\><C-n>', { noremap = true })
+
 vim.keymap.set('n', 'U', '<C-r>', { noremap = true })
 vim.keymap.set('n', '<C-r>', 'U', { noremap = true })
 

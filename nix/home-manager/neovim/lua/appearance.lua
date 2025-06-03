@@ -1,5 +1,5 @@
 local opt = vim.opt
 
 opt.number = true
-opt.cursorlien = true
+opt.cursorline = true
 opt.cmdheight = 0

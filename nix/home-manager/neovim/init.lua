@@ -1,7 +1,5 @@
+require('base')
+require('appearance')
 require('user-keymap')
+require('user-autocmd')
 require('plugin')
-
-vim.lsp.enable({
-  'nil',
-  'lua-language-server',
-})
