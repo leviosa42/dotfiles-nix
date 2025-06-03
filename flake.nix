@@ -13,10 +13,10 @@
 
     systems.url = "github:nix-systems/default";
 
-    # treefmt-nix = {
-    #   url = "github:numtide/treefmt-nix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     git-hooks-nix = {
       url = "github:cachix/git-hooks.nix";
@@ -39,6 +39,8 @@
         inputs.git-hooks-nix.flakeModule
         ## REF: https://flake.parts/options/home-manager.html
         inputs.home-manager.flakeModules.home-manager
+        ## REF: https://flake.parts/options/treefmt-nix.html
+        inputs.treefmt-nix.flakeModule
       ];
 
       flake = {
@@ -134,7 +136,8 @@
                 flake-checker.enable = true; # Run health checks on flake-powered Nix projects
                 # nixfmt-rfc-style.enable = true; # Format nixfmt-rfc-style
                 # shellcheck.enable = true; # Format shell scripts
-                statix = { # Lints and suggests improvements to Nix code
+                statix = {
+                  # Lints and suggests improvements to Nix code
                   enable = true;
                   verbose = true; # Show all warnings
                   settings = {
@@ -145,10 +148,23 @@
                     ];
                   };
                 };
+                ## NOTE: priority?
                 ## REF: https://flake.parts/options/git-hooks-nix.html#opt-perSystem.pre-commit.settings.hooks.treefmt
-                # treefmt.enable = true;
+                treefmt = {
+                  enable = true;
+                  packageOverrides.treefmt = config.treefmt.build.wrapper; # # use built treefmt by perSystem.treefmt
+                };
                 ## --- custom hooks ---
               };
+            };
+          };
+
+          treefmt = {
+            ## REF: https://github.com/numtide/treefmt-nix/blob/1f3f7b784643d488ba4bf315638b2b0a4c5fb007/flake-module.nix#L70-L75
+            flakeCheck = true; # # Add a flake check to run `treefmt`. default: true
+            flakeFormatter = true; # # Enable `treefmt` the default formatter used by `nix fmt` command.
+            programs = {
+              nixfmt.enable = true;
             };
           };
 
@@ -156,56 +172,61 @@
             switch = {
               type = "app";
               ## display runned commadn to switch configurations with cyan color
-              program = toString (pkgs.writeShellScript "switch-script" ''
-                set -e
-                hostname=$(uname -n)
-                system=${system}
-                distro=$(cat /etc/os-release | grep ^ID= | cut -d '=' -f 2)
-                is_wsl() {
-                  grep -q "Microsoft" /proc/version || grep -q "WSL" /proc/version
-                }
-                run_command() {
-                  echo -e "\\033[36m> $1\\033[0m"
-                  eval "$1"
-                }
-                echo "info:"
-                echo "  hostname: $hostname"
-                echo "  system: $system"
-                echo "  distro: $distro"
-                echo "  is_wsl: $(is_wsl && echo true || echo false)"
+              program = toString (
+                pkgs.writeShellScript "switch-script" ''
+                  set -e
+                  hostname=$(uname -n)
+                  system=${system}
+                  distro=$(cat /etc/os-release | grep ^ID= | cut -d '=' -f 2)
+                  is_wsl() {
+                    grep -q "Microsoft" /proc/version || grep -q "WSL" /proc/version
+                  }
+                  run_command() {
+                    echo -e "\\033[36m> $1\\033[0m"
+                    eval "$1"
+                  }
+                  echo "info:"
+                  echo "  hostname: $hostname"
+                  echo "  system: $system"
+                  echo "  distro: $distro"
+                  echo "  is_wsl: $(is_wsl && echo true || echo false)"
 
-                ## NOTE: inf loop?
-                # run_command "nix flake update"
-                # git add flake.nix
-                # git commit -m "update(deps): flake.lock by `nix run .#switch`"
+                  ## NOTE: inf loop?
+                  # run_command "nix flake update"
+                  # git add flake.nix
+                  # git commit -m "update(deps): flake.lock by `nix run .#switch`"
 
-                if [[ "$distro" == "nixos" ]]; then
-                  if is_wsl; then
-                    run_command "sudo nixos-rebuild switch --flake .#NixOS-WSL"
+                  if [[ "$distro" == "nixos" ]]; then
+                    if is_wsl; then
+                      run_command "sudo nixos-rebuild switch --flake .#NixOS-WSL"
+                    else
+                      run_command "sudo nixos-rebuild switch --flake .#NixOS-Desktop"
+                    fi
                   else
-                    run_command "sudo nixos-rebuild switch --flake .#NixOS-Desktop"
+                    case "$system" in
+                      "x86_64-linux")
+                        run_command "home-manager switch --flake .#Home"
+                        ;;
+                      "aarch64-linux")
+                        run_command "home-manager switch --flake .#rpi5-waltz"
+                        ;;
+                      *)
+                        echo "Unknown system: $system"
+                        exit 1
+                        ;;
+                    esac
                   fi
-                else
-                  case "$system" in
-                    "x86_64-linux")
-                      run_command "home-manager switch --flake .#Home"
-                      ;;
-                    "aarch64-linux")
-                      run_command "home-manager switch --flake .#rpi5-waltz"
-                      ;;
-                    *)
-                      echo "Unknown system: $system"
-                      exit 1
-                      ;;
-                  esac
-                fi
-              '');
+                ''
+              );
             };
           };
 
           devShells = {
             default = pkgs.mkShell {
-              inputsFrom = [ config.pre-commit.devShell ];
+              inputsFrom = [
+                config.pre-commit.devShell
+                config.treefmt.build.devShell
+              ];
               packages = with pkgs; [
                 # home-manager.packages.${system}.default
                 home-manager
