@@ -72,6 +72,7 @@
                   # useGlobalPkgs = true;
                   # useUserPackages = true;
                   users."nimado" = import ./nix/home-manager;
+                  backupFileExtension = "bak";
                 };
               }
             ];
