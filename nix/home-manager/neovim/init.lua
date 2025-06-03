@@ -1,7 +1,7 @@
-require("user-keymap")
-require("plugin")
+require('user-keymap')
+require('plugin')
 
 vim.lsp.enable({
-	"nil",
-	"lua-language-server"
+  'nil',
+  'lua-language-server',
 })

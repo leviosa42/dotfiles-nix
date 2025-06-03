@@ -1,9 +1,9 @@
 return {
-	'lambdalisue/fern.vim',
-  	config = function()
-        vim.keymap.set('n', '[edit]e', '<Cmd>Fern . -drawer -toggle -keep<CR>', { noremap = true })
-        vim.keymap.set('n', '[edit]d', '<Cmd>Fern %:h -drawer -toggle -keep<CR>', { noremap = true })
-        vim.cmd([[
+  'lambdalisue/fern.vim',
+  config = function()
+    vim.keymap.set('n', '[edit]e', '<Cmd>Fern . -drawer -toggle -keep<CR>', { noremap = true })
+    vim.keymap.set('n', '[edit]d', '<Cmd>Fern %:h -drawer -toggle -keep<CR>', { noremap = true })
+    vim.cmd([[
             let g:fern#default_hidden = 1
             function! Fern_settings() abort
               " https://github.com/lambdalisue/fern.vim/issues/270#issuecomment-740257133
@@ -18,6 +18,6 @@ return {
               autocmd FileType fern call Fern_settings()
             augroup END
         ]])
-    end,
+  end,
   -- dependencies = { 'lambdalisue/fern-renderer-nerdfont.vim ' }
 }

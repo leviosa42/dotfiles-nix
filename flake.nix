@@ -166,6 +166,16 @@
             flakeFormatter = true; # # Enable `treefmt` the default formatter used by `nix fmt` command.
             programs = {
               nixfmt.enable = true;
+              stylua = {
+                enable = true;
+                settings = {
+                  column_width = 120;
+                  indent_type = "Spaces";
+                  indent_width = 2;
+                  line_endings = "Unix";
+                  quote_style = "AutoPreferSingle";
+                };
+              };
             };
           };
 
