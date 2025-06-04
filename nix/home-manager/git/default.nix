@@ -20,5 +20,8 @@
     delta = {
       enable = true;
     };
+    extraConfig = {
+      commit.template = ./commit-template.txt;
+    };
   };
 }

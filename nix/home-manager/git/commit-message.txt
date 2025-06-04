@@ -1,0 +1,20 @@
+
+# === format ===
+# <type>[optional scope]: <description>
+# 
+# [optional body]
+# 
+# [optional footer(s)]
+
+# === prefix ===
+# build: ビルドシステムの変更，または依存関係のアップデート
+# ci: CIの設定ファイルやスクリプトの変更
+# docs: ドキュメントの変更のみ
+# feat: 新機能の追加
+# fix: バグの修正
+# perf: パフォーマンスの改善
+# refactor: fixやfeatではない変更
+# revert: Revert
+# style: コードスタイルの変更
+# test: テストの追加や修正
+# chore: その他の変更
