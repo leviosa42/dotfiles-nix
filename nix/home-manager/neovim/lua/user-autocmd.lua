@@ -14,6 +14,7 @@ vim.cmd([[
     autocmd FileType make setl noet ts=4 sw=0 sts=-1
     autocmd FileType javascript setl noet ts=4 sw=0 sts=-1
     autocmd FileType lua setl et ts=2 sw=0 sts=-1
+    autocmd FileType nix setl et ts=2 sw=0 sts=-1
   augroup END
 ]])
 
