@@ -6,6 +6,7 @@ local enabled_plugins = {
       vim.lsp.enable({
         'nil_ls',
         'lua_ls',
+        'tinymist',
       })
       vim.lsp.config('*', {
         capabilities = require('cmp_nvim_lsp').default_capabilities(),
@@ -15,6 +16,7 @@ local enabled_plugins = {
   require('plugins/lualine'),
   require('plugins/fern'),
   require('plugins/nvim-cmp'),
+  require('plugins/copilot-lua'),
 }
 
 require('lazy').setup(enabled_plugins, {

@@ -13,6 +13,10 @@ in
     extraPackages = with pkgs; [
       nil
       lua-language-server
+      tinymist
+      # copilot.lua
+      curl
+      nodejs-slim # v20 or higher
     ];
     plugins = with pkgs.vimPlugins; [ lazy-nvim ];
   };
