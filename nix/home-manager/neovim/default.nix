@@ -11,6 +11,7 @@ in
     withRuby = false;
     # extraLuaConfig = builtins.readFile ./init.lua;
     extraPackages = with pkgs; [
+      websocat # for typst-preview
       nil
       lua-language-server
       tinymist

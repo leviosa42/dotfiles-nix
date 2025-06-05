@@ -17,6 +17,7 @@ local enabled_plugins = {
   require('plugins/fern'),
   require('plugins/nvim-cmp'),
   require('plugins/copilot-lua'),
+  require('plugins/typst-preview-nvim'),
 }
 
 require('lazy').setup(enabled_plugins, {

@@ -68,6 +68,8 @@
                     wslu
                   ];
                   services.vscode-server.enable = true;
+                  # for chomosuke/typst-preview.nvim
+                  programs.nix-ld.enable = true;
                 }
               )
               ## home-manager
