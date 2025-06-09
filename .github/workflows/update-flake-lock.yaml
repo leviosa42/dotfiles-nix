@@ -1,0 +1,28 @@
+name: update
+
+on:
+  schedule:
+    # 毎月5日/25日の00:00に実行
+    - cron: '0 0 5,25 * *'
+  workflow_dispatch:
+
+jobs:
+  update-flake-lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - name: Generate branch date
+        run: |
+          echo "CURRENT_DATE=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+      - uses: DeterminateSystems/update-flake-lock@main
+        with:
+          pr-title: "build(auto): Updated flake.lock"
+          pr-labels: |
+            build
+            automated
+          pr-reviewers: ${{ github.actor }}
+          branch: "build-update-flake-lock-${{ env.CURRENT_DATE }}"
+          commit-msg: "build(auto): Updated flake.lock"
+          path-to-flake-dir: ./
