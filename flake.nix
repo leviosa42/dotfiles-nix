@@ -103,7 +103,7 @@
             pkgs = import nixpkgs { system = "x86_64-linux"; };
             modules = [
               rec {
-                home.username = "motch";
+                home.username = "nimado";
                 home.homeDirectory = "/home/${home.username}";
               }
               ./nix/home-manager
@@ -232,10 +232,10 @@
                   else
                     case "$system" in
                       "x86_64-linux")
-                        run_command "home-manager switch --flake .#Home"
+                         run_command "home-manager switch --flake .#Home -b bak"
                         ;;
                       "aarch64-linux")
-                        run_command "home-manager switch --flake .#rpi5-waltz"
+                        run_command "home-manager switch --flake .#rpi5-waltz -b bak"
                         ;;
                       *)
                         echo "Unknown system: $system"
