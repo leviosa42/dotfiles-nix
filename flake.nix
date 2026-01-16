@@ -198,6 +198,7 @@
           apps = {
             switch = {
               type = "app";
+              meta.description = "Switch environment";
               ## display runned commadn to switch configurations with cyan color
               program = toString (
                 pkgs.writeShellScript "switch-script" ''
