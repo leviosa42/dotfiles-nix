@@ -123,7 +123,7 @@
             pkgs = import nixpkgs { system = "aarch64-linux"; };
             modules = [
               rec {
-                home.username = "motch";
+                home.username = "nimado";
                 home.homeDirectory = "/home/${home.username}";
               }
               ./nix/home-manager
