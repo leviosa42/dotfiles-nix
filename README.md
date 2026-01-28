@@ -1,6 +1,11 @@
 <h1 align="center">:snowflake: dotfiles-nix :snowflake:</h1>
 
-## Installation
+## Install Nix
+
+```sh
+# Install Nix via Determinate Nix
+curl -fsSL https://install.determinate.systems/nix | sh -s -- install
+```
 
 ### NixOS (NixOS-WSL)
 
@@ -20,7 +25,8 @@ nix run .#switch
 ### non-NixOS
 
 ```sh
-git clone https://github.com/leviosa42/dotfiles-nix && cd dotfiles-nix
+nix run nixpkgs#git clone https://github.com/leviosa42/dotfiles-nix
+cd dotfiles-nix
 nix flake update
 nix run .#switch
 ```
