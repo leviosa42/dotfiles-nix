@@ -127,6 +127,14 @@
                 home.homeDirectory = "/home/${home.username}";
               }
               ./nix/home-manager
+              (
+                { pkgs, ... }:
+                {
+                  home.packages = with pkgs; [
+                    mosh
+                  ];
+                }
+              )
             ];
           };
         };
