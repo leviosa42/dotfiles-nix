@@ -28,6 +28,7 @@ nix run .#switch
 nix run nixpkgs#git clone https://github.com/leviosa42/dotfiles-nix
 cd dotfiles-nix
 nix flake update
+nix shell github:nixos/nixpkgs/nixos-25.11#home-manager
 nix run .#switch
 ```
 
