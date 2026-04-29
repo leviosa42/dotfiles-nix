@@ -11,7 +11,7 @@
       extraConfig = {
         init.defaultBranch = "main";
       };
-      aliases = {
+      alias = {
         br = "branch";
         co = "checkout";
         cm = "commit";
