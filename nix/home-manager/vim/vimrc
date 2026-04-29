@@ -99,6 +99,9 @@ let g:mapleader ="\<Space>"
 
 inoremap <silent> jk <Esc>
 nnoremap x "_x
+tnoremap <Esc><Esc> <C-\><C-n>
+tnoremap jk <C-\><C-n>
+nnoremap Y y$
 
 " --- [buffer] ---
 nmap <Leader>b [buffer]
