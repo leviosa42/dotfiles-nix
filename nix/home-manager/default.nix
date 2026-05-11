@@ -3,6 +3,7 @@ rec {
   imports = [
     ./bash
     ./direnv
+    ./mise
     ./neovim
     ./starship
     ./vim
